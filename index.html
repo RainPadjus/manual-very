@@ -159,10 +159,10 @@ main{padding-top:var(--hh)}
 .content h2{font-family:var(--fd);font-size:1.65rem;font-weight:600;margin:2.75rem 0 1rem;letter-spacing:-.01em;color:var(--tx)}
 .content h3{font-family:var(--fd);font-size:1.35rem;font-weight:600;margin:2.25rem 0 .75rem;letter-spacing:-.01em}
 .content h4{font-family:var(--fd);font-size:1.15rem;font-weight:600;margin:1.75rem 0 .6rem}
-.content p{margin-bottom:1.25em;font-size:var(--fs-body);line-height:1.8}
+.content p{margin-bottom:1.25em;font-size:var(--fs-body,1.08rem);line-height:1.8}
 .content ul,.content ol{margin:1em 0 1.5em;padding-left:1.75em}
 .content ol{list-style:decimal}
-.content li{margin-bottom:.5em;line-height:1.65;font-size:1.02rem}
+.content li{margin-bottom:.5em;line-height:1.65;font-size:var(--fs-body,1.08rem)}
 .content li::marker{color:var(--tx4)}
 .content strong{font-weight:600;color:var(--tx)}
 .content em{font-style:italic}
@@ -185,8 +185,8 @@ main{padding-top:var(--hh)}
 
 /* Depth-specific */
 .tier-0 .content{max-width:var(--yw);margin:0 auto}
-.tier-0 .content p{font-size:1.18rem;line-height:1.88}
-.tier-0 .content li{font-size:1.08rem}
+.tier-0 .content p{font-size:var(--fs-body,1.08rem);line-height:1.88}
+.tier-0 .content li{font-size:var(--fs-body,1.08rem)}
 
 /* ═══ DIVE DEEPER ═══ */
 .dive{text-align:center;margin:3rem 0 1rem;opacity:0;animation:fadeUp .5s ease .15s forwards}
@@ -221,7 +221,7 @@ main{padding-top:var(--hh)}
 .content-enter{animation:contentIn .45s ease forwards}
 
 /* ═══ ILLUSTRATIONS ═══ */
-.ch-illust{margin:1.5rem 0 2.5rem;position:relative;overflow:hidden;border-radius:6px;box-shadow:var(--sh2)}
+.ch-illust{margin:1.5rem -12.5% 2.5rem;width:125%;max-width:calc(100vw - 2rem);position:relative;overflow:hidden;border-radius:6px;box-shadow:var(--sh2)}
 .ch-illust img{width:100%;display:block;opacity:.92;transition:opacity .3s ease}
 .ch-illust img:hover{opacity:1}
 .ch-illust figcaption{position:absolute;bottom:0;left:0;right:0;padding:.55rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,.65));color:rgba(255,255,255,.85);font-family:var(--fd);font-style:italic;font-size:.82rem;letter-spacing:.02em}
@@ -232,8 +232,8 @@ main{padding-top:var(--hh)}
 /* ═══ EPIGRAPHS ═══ */
 .ch-epigraph{margin:2rem auto 2.5rem;max-width:34rem;padding:0 1.5rem;text-align:center;opacity:0;animation:fadeUp .6s ease .2s forwards}
 .ch-epigraph::before{content:'';display:block;width:2.5rem;height:1px;background:var(--ac);opacity:.35;margin:0 auto 1.2rem}
-.ch-epigraph .eq{font-family:var(--fd);font-style:italic;font-size:.95rem;line-height:1.75;color:var(--tx3)}
-.ch-epigraph .ea{font-family:var(--fm);font-size:.62rem;color:var(--tx4);margin-top:.85rem;letter-spacing:.08em}
+.ch-epigraph .eq{font-family:var(--fd);font-style:italic;font-size:1.18rem;line-height:1.75;color:var(--tx3)}
+.ch-epigraph .ea{font-family:var(--fm);font-size:.75rem;color:var(--tx4);margin-top:.85rem;letter-spacing:.08em}
 [data-theme="dark"] .ch-epigraph .eq{color:var(--tx2)}
 
 /* ═══ AUDIO PLAYER ═══ */
@@ -298,8 +298,8 @@ main{padding-top:var(--hh)}
 @media(max-width:768px){
   :root{--sw:85vw;--cw:100%}
   .reading{padding:2rem 1.15rem 3rem}
-  .content p{font-size:1.02rem}
-  .tier-0 .content p{font-size:1.1rem}
+  .content p{font-size:var(--fs-body,1.02rem)}
+  .tier-0 .content p{font-size:var(--fs-body,1.02rem)}
   .depth-btn{padding:.45rem 1rem;font-size:.66rem}
   .ch-nav{flex-direction:column}
   .nav-btn{max-width:100%}
@@ -308,7 +308,7 @@ main{padding-top:var(--hh)}
   .content th,.content td{padding:.45rem .6rem;font-size:.85rem}
   .book-footer kbd{display:none}
   .ch-epigraph{max-width:100%;padding:0 .5rem;margin:1.5rem auto 2rem}
-  .ch-epigraph .eq{font-size:.88rem}
+  .ch-epigraph .eq{font-size:1.08rem}
   #btt{bottom:1.25rem;right:1.25rem;width:38px;height:38px}
   .hdr-title{display:none}
   .hdr-sep{display:none}
@@ -536,6 +536,8 @@ const app={
   initSettings(){
     var fs=localStorage.getItem('mv_fontsize')||'1.08rem';
     var w=localStorage.getItem('mv_width')||'680px';
+    document.documentElement.style.setProperty('--fs-body',fs);
+    document.documentElement.style.setProperty('--cw',w);
     document.querySelectorAll('#fontSizeOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===fs)});
     document.querySelectorAll('#widthOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===w)});
   },
