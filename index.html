@@ -359,7 +359,6 @@ main{padding-top:var(--hh)}
   <p class="cover-sub">v1.0</p>
   <button class="cover-btn" onclick="app.start()">Читать</button>
   <button class="cover-continue hidden" id="coverContinue" onclick="app.resume()"></button>
-  <button class="cover-bonus" onclick="app.goInvestigation()">Бонус: как всё началось →</button>
   <button class="cover-about" onclick="app.openAbout()">О проекте</button>
   <div class="cover-progress hidden" id="coverProgress">
     <div class="cover-progress-text" id="coverProgressText"></div>
@@ -406,6 +405,7 @@ main{padding-top:var(--hh)}
       <span class="about-sep"></span>
       <p>В кратком изложении: с помощью ИИ мы хотим собрать информацию на вкус автора, стараясь быть непредвзятыми и избегать уклона в конкретные конфессии. Это современная компиляция, основанная на обезличенных библейских темах.</p>
       <p>Идея проекта началась с полусерьезного исследования, основанного на исторических и логических аргументах.</p>
+      <p><a href="#" onclick="app.closeAbout();app.goInvestigation();app.showReader();return false">Читать исследование →</a></p>
       <div class="about-sig">© Просто о вере, 2026</div>
     </div>
   </div>
