@@ -265,6 +265,25 @@ main{padding-top:var(--hh)}
 /* ═══ INVESTIGATION ═══ */
 .cover-bonus{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-top:2.5rem;cursor:pointer;transition:color var(--ease);position:relative;z-index:1;background:none;border:none;padding:.5rem 1rem;border-radius:4px}
 .cover-bonus:hover{color:var(--ac)}
+.cover-about{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-top:.75rem;cursor:pointer;transition:color var(--ease);position:relative;z-index:1;background:none;border:none;padding:.5rem 1rem;border-radius:4px}
+.cover-about:hover{color:var(--ac)}
+
+/* ═══ ABOUT MODAL ═══ */
+#aboutModal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem}
+#aboutModal .search-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:fadeIn .2s ease}
+.about-dialog{position:relative;width:min(640px,92vw);max-height:85vh;background:var(--bgR);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh3);overflow:hidden;animation:modalIn .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.about-hdr{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--bd);flex-shrink:0}
+.about-hdr-title{font-family:var(--fd);font-size:1.15rem;font-weight:600;color:var(--tx)}
+.about-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;border-radius:8px;transition:all var(--ease);color:var(--tx3)}
+.about-close:hover{background:var(--acbg);color:var(--ac)}
+.about-close svg{width:14px;height:14px}
+.about-body{padding:1.5rem;overflow-y:auto;overscroll-behavior:contain}
+.about-body p{font-family:var(--fb);font-size:.95rem;line-height:1.8;color:var(--tx2);margin-bottom:1.15em}
+.about-body p:last-child{margin-bottom:0}
+.about-body .about-sep{width:2.5rem;height:1px;background:var(--ac);opacity:.35;margin:1.75rem auto;display:block}
+.about-body a{color:var(--ac);text-decoration:none;border-bottom:1px solid var(--acbg2);transition:all var(--ease)}
+.about-body a:hover{border-bottom-color:var(--ac)}
+.about-body .about-sig{font-family:var(--fm);font-size:.72rem;color:var(--tx4);letter-spacing:.04em;margin-top:1.5rem;text-align:right}
 .sb-bonus{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);opacity:.7;padding:.15rem .75rem;margin-bottom:.15rem}
 
 /* ═══ SETTINGS PANEL ═══ */
@@ -341,6 +360,7 @@ main{padding-top:var(--hh)}
   <button class="cover-btn" onclick="app.start()">Читать</button>
   <button class="cover-continue hidden" id="coverContinue" onclick="app.resume()"></button>
   <button class="cover-bonus" onclick="app.goInvestigation()">Бонус: как всё началось →</button>
+  <button class="cover-about" onclick="app.openAbout()">О проекте</button>
   <div class="cover-progress hidden" id="coverProgress">
     <div class="cover-progress-text" id="coverProgressText"></div>
     <div class="cover-progress-bar"><div class="cover-progress-fill" id="coverProgressFill"></div></div>
@@ -362,6 +382,31 @@ main{padding-top:var(--hh)}
       <span><kbd>↑↓</kbd> навигация</span>
       <span><kbd>⏎</kbd> перейти</span>
       <span><kbd>Esc</kbd> закрыть</span>
+    </div>
+  </div>
+</div>
+
+<div id="aboutModal" class="hidden">
+  <div class="search-backdrop" onclick="app.closeAbout()"></div>
+  <div class="about-dialog">
+    <div class="about-hdr">
+      <span class="about-hdr-title">О проекте</span>
+      <button class="about-close" onclick="app.closeAbout()" aria-label="Закрыть">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+      </button>
+    </div>
+    <div class="about-body">
+      <p>Данный проект — это попытка собрать информацию в первую очередь для себя и поделиться ею, если она окажется полезной для других. Это своего рода сжатое изложение, которое помогает разобраться в вопросах веры и их интерпретации.</p>
+      <p>Вопрос веры является достаточно личным и может трактоваться по-разному в различных конфессиях и у разных людей. Поэтому, если мы стремимся получить усредненный, общий и непредвзятый взгляд, то что может быть лучше, чем такое усредненное прочтение? Это модель информации, доступной в интернете и в нашем информационном поле.</p>
+      <p>Мы можем попробовать применить этот подход, чтобы обезличить автора трактовки. В будущем планируется добавить интерактивные элементы, такие как чат, который будет отслеживать, что вы читаете, и позволит задавать вопросы. Система сможет находить нужные материалы, что, на мой взгляд, поможет ответить на множество вопросов, используя заранее подготовленные информационные материалы.</p>
+      <p>Проект является экспериментальным и создан для себя, на мой вкус. У меня есть мнение о том, как это должно выглядеть и как может быть полезно. Я не боюсь представить и показать это мнение.</p>
+      <span class="about-sep"></span>
+      <p>Идея проекта родилась из обычного диалога с Клодом, где я задавал вопросы. Некоторые могут сказать, что я формировал ответы, нужные мне, но мне было интересно вытянуть аргументы. Это был результат нескольких различных чатов, где я просил его заново начать и попытаться опровергнуть предыдущие ответы, используя только формальную логику и исторические факты.</p>
+      <p>Не скажу, что исследование получилось абсолютно корректным и серьезным, но это неплохая отправная точка для мыслительных экспериментов и исследований. В любом случае, проект создан для себя, так как я считаю нужным, и выглядит так, как мне кажется правильно, приятно и интересно.</p>
+      <span class="about-sep"></span>
+      <p>В кратком изложении: с помощью ИИ мы хотим собрать информацию на вкус автора, стараясь быть непредвзятыми и избегать уклона в конкретные конфессии. Это современная компиляция, основанная на обезличенных библейских темах.</p>
+      <p>Идея проекта началась с полусерьезного исследования, основанного на исторических и логических аргументах.</p>
+      <div class="about-sig">© Просто о вере, 2025</div>
     </div>
   </div>
 </div>
@@ -522,6 +567,14 @@ const app={
   },
   closeSettings(){
     document.getElementById('settingsPanel').classList.remove('open');
+  },
+  openAbout(){
+    document.getElementById('aboutModal').classList.remove('hidden');
+    document.body.style.overflow='hidden';
+  },
+  closeAbout(){
+    document.getElementById('aboutModal').classList.add('hidden');
+    document.body.style.overflow='';
   },
   setFontSize(v){
     document.documentElement.style.setProperty('--fs-body',v);
@@ -1050,6 +1103,7 @@ const app={
       /* Search shortcut */
       if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();self.openSearch();return}
       if(e.key==='Escape'){
+        if(!document.getElementById('aboutModal').classList.contains('hidden')){self.closeAbout();return}
         if(!document.getElementById('searchModal').classList.contains('hidden')){self.closeSearch();return}
         if(document.getElementById('settingsPanel').classList.contains('open')){self.closeSettings();return}
         if(self.s.sbOpen){self.closeSidebar();return}
