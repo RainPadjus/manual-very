@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Мануал веры</title>
+<title>Просто о вере</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='none' stroke='%231C1917' stroke-width='.75'/><circle cx='16' cy='16' r='9' fill='none' stroke='%231C1917' stroke-width='.75'/><circle cx='16' cy='16' r='4' fill='%231C1917'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,14 +243,21 @@ main{padding-top:var(--hh)}
 .audio-toggle.playing{border-color:var(--ac);color:var(--ac);background:var(--acbg)}
 .audio-box{display:none;margin-top:.75rem;padding:.75rem 1rem;border-radius:12px;background:var(--bgI);border:1px solid var(--bd)}
 .audio-box.open{display:block;animation:fadeUp .3s ease forwards}
-.audio-bar-wrap{display:flex;align-items:center;gap:.65rem}
-.audio-play{background:none;border:none;cursor:pointer;color:var(--ac);padding:2px;display:flex;align-items:center;transition:transform .15s ease}
+.audio-bar-wrap{display:flex;align-items:center;gap:.5rem}
+.audio-play{background:none;border:none;cursor:pointer;color:var(--ac);padding:2px;display:flex;align-items:center;transition:transform .15s ease;flex-shrink:0}
 .audio-play:hover{transform:scale(1.12)}
-.audio-play svg{width:18px;height:18px}
-.audio-track{flex:1;height:3px;background:var(--bd2);border-radius:2px;cursor:pointer;position:relative;overflow:hidden}
+.audio-play svg{width:20px;height:20px}
+.audio-skip{background:none;border:none;cursor:pointer;color:var(--tx3);padding:2px;display:flex;align-items:center;transition:all .15s ease;flex-shrink:0;position:relative}
+.audio-skip:hover{color:var(--ac)}
+.audio-skip svg{width:16px;height:16px}
+.audio-skip-label{font-family:var(--fm);font-size:.42rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-weight:500}
+.audio-track{flex:1;height:20px;cursor:pointer;position:relative;display:flex;align-items:center}
+.audio-track-bar{width:100%;height:4px;background:var(--bd2);border-radius:2px;position:relative;overflow:hidden}
 .audio-fill{height:100%;background:var(--ac);border-radius:2px;width:0;transition:width .1s linear}
-.audio-time{font-family:var(--fm);font-size:.58rem;color:var(--tx4);letter-spacing:.03em;min-width:5.5ch;text-align:right}
-.audio-speed{background:none;border:1px solid var(--bd);border-radius:4px;font-family:var(--fm);font-size:.55rem;color:var(--tx3);padding:1px 5px;cursor:pointer;transition:all .2s ease;letter-spacing:.02em}
+.audio-track-thumb{width:12px;height:12px;background:var(--ac);border-radius:50%;position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .1s linear;box-shadow:0 1px 3px rgba(0,0,0,.2);opacity:0;left:0}
+.audio-track:hover .audio-track-thumb{opacity:1}
+.audio-time{font-family:var(--fm);font-size:.58rem;color:var(--tx4);letter-spacing:.03em;min-width:7ch;text-align:right;flex-shrink:0}
+.audio-speed{background:none;border:1px solid var(--bd);border-radius:4px;font-family:var(--fm);font-size:.55rem;color:var(--tx3);padding:1px 5px;cursor:pointer;transition:all .2s ease;letter-spacing:.02em;flex-shrink:0}
 .audio-speed:hover{border-color:var(--ac);color:var(--ac)}
 [data-theme="dark"] .audio-box{background:var(--bgI)}
 
@@ -304,7 +311,7 @@ main{padding-top:var(--hh)}
       <circle cx="80" cy="80" r="3.5" fill="currentColor" class="cc cc4"/>
     </svg>
   </div>
-  <h1 class="cover-title">Мануал веры</h1>
+  <h1 class="cover-title">Просто о вере</h1>
   <p class="cover-sub">v1.0</p>
   <button class="cover-btn" onclick="app.start()">Читать</button>
   <button class="cover-continue hidden" id="coverContinue" onclick="app.resume()"></button>
@@ -335,7 +342,7 @@ main{padding-top:var(--hh)}
     <button class="icon-btn" onclick="app.toggleSidebar()" aria-label="Меню">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="14" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
     </button>
-    <span class="hdr-title">Мануал веры</span>
+    <span class="hdr-title">Просто о вере</span>
     <span class="hdr-sep">/</span>
     <span class="hdr-chapter" id="hdrChapter"></span>
     <div class="hdr-right">
@@ -500,13 +507,39 @@ const app={
     var w=document.getElementById('audioWrap');
     var sec=this.s.sec,depth=this.s.depth;
     if(sec<0||sec>=18||depth!==0){w.innerHTML='';return}
-    var src='audio/yadro/'+AUDIO_FILES[sec]+'.mp3';
-    w.innerHTML='<div class="audio-wrap"><button class="audio-toggle" id="audioToggle" onclick="app.toggleAudioBox()"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 3.75a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.2.6L5.8 12.5H3.25A.75.75 0 0 1 2.5 11.75v-4.5a.75.75 0 0 1 .75-.75H5.8l3.75-3.1a.75.75 0 0 1 .45-.15zM12.5 7a.5.5 0 0 1 .7 0 4.5 4.5 0 0 1 0 6 .5.5 0 1 1-.7-.7 3.5 3.5 0 0 0 0-4.6.5.5 0 0 1 0-.7zm1.8-1.8a.5.5 0 0 1 .7 0 7.5 7.5 0 0 1 0 9.6.5.5 0 1 1-.7-.7 6.5 6.5 0 0 0 0-8.2.5.5 0 0 1 0-.7z"/></svg>Слушать ядро</button><div class="audio-box" id="audioBox"><div class="audio-bar-wrap"><button class="audio-play" id="audioPlayBtn" onclick="app.audioToggle()"><svg viewBox="0 0 20 20" fill="currentColor"><polygon points="5,3 17,10 5,17"/></svg></button><div class="audio-track" id="audioTrack" onclick="app.audioSeek(event)"><div class="audio-fill" id="audioFill"></div></div><span class="audio-time" id="audioTimeEl">0:00</span><button class="audio-speed" id="audioSpeedBtn" onclick="app.audioCycleSpeed()">1x</button></div></div></div>';
+    var playIco='<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="5,3 17,10 5,17"/></svg>';
+    var pauseIco='<svg viewBox="0 0 20 20" fill="currentColor"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg>';
+    var skipBkIco='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 1 1.5 4.3"/><polyline points="3,7 3,10.5 6.5,10.5"/></svg>';
+    var skipFwIco='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10a7 7 0 1 1-1.5 4.3"/><polyline points="17,7 17,10.5 13.5,10.5"/></svg>';
+    var speakerIco='<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 3.75a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.2.6L5.8 12.5H3.25A.75.75 0 0 1 2.5 11.75v-4.5a.75.75 0 0 1 .75-.75H5.8l3.75-3.1a.75.75 0 0 1 .45-.15zM12.5 7a.5.5 0 0 1 .7 0 4.5 4.5 0 0 1 0 6 .5.5 0 1 1-.7-.7 3.5 3.5 0 0 0 0-4.6.5.5 0 0 1 0-.7zm1.8-1.8a.5.5 0 0 1 .7 0 7.5 7.5 0 0 1 0 9.6.5.5 0 1 1-.7-.7 6.5 6.5 0 0 0 0-8.2.5.5 0 0 1 0-.7z"/></svg>';
+    w.innerHTML='<div class="audio-wrap">'
+      +'<button class="audio-toggle" id="audioToggle" onclick="app.toggleAudioBox()">'+speakerIco+'Слушать ядро</button>'
+      +'<div class="audio-box" id="audioBox"><div class="audio-bar-wrap">'
+      +'<button class="audio-play" id="audioPlayBtn" onclick="app.audioToggle()">'+playIco+'</button>'
+      +'<button class="audio-skip" onclick="app.audioSkip(-15)" title="-15с">'+skipBkIco+'<span class="audio-skip-label">15</span></button>'
+      +'<div class="audio-track" id="audioTrack"><div class="audio-track-bar"><div class="audio-fill" id="audioFill"></div></div><div class="audio-track-thumb" id="audioThumb"></div></div>'
+      +'<button class="audio-skip" onclick="app.audioSkip(15)" title="+15с">'+skipFwIco+'<span class="audio-skip-label">15</span></button>'
+      +'<span class="audio-time" id="audioTimeEl">0:00</span>'
+      +'<button class="audio-speed" id="audioSpeedBtn" onclick="app.audioCycleSpeed()">1x</button>'
+      +'</div></div></div>';
+    var track=document.getElementById('audioTrack');
+    var self=this;
+    track.addEventListener('click',function(e){self.audioSeek(e)});
+    var dragging=false;
+    track.addEventListener('mousedown',function(e){dragging=true;self.audioSeek(e)});
+    document.addEventListener('mousemove',function(e){if(dragging)self.audioSeek(e)});
+    document.addEventListener('mouseup',function(){dragging=false});
+    track.addEventListener('touchstart',function(e){dragging=true;self.audioSeek(e.touches[0])},{passive:true});
+    document.addEventListener('touchmove',function(e){if(dragging)self.audioSeek(e.touches[0])},{passive:true});
+    document.addEventListener('touchend',function(){dragging=false});
     if(this._audio&&this._audioSec===sec){
       var tb=document.getElementById('audioToggle');
       if(!this._audio.paused)tb.classList.add('playing');
       document.getElementById('audioBox').classList.add('open');
       this._audioUpdateUI();
+      if(!this._audio.paused){
+        document.getElementById('audioPlayBtn').innerHTML='<svg viewBox="0 0 20 20" fill="currentColor"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg>';
+      }
     }
   },
   toggleAudioBox(){
@@ -538,11 +571,15 @@ const app={
       document.getElementById('audioPlayBtn').innerHTML='<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="5,3 17,10 5,17"/></svg>';
     }
   },
-  audioSeek(e){
+  audioSkip(sec){
     if(!this._audio)return;
+    this._audio.currentTime=Math.max(0,Math.min(this._audio.duration,this._audio.currentTime+sec));
+  },
+  audioSeek(e){
+    if(!this._audio||!this._audio.duration)return;
     var t=document.getElementById('audioTrack');
     var r=t.getBoundingClientRect();
-    var pct=(e.clientX-r.left)/r.width;
+    var pct=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
     this._audio.currentTime=pct*this._audio.duration;
   },
   audioCycleSpeed(){
@@ -556,10 +593,14 @@ const app={
     var pct=(this._audio.currentTime/this._audio.duration)*100;
     var el=document.getElementById('audioFill');
     if(el)el.style.width=pct+'%';
-    var rem=this._audio.duration-this._audio.currentTime;
-    var m=Math.floor(rem/60),s=Math.floor(rem%60);
+    var thumb=document.getElementById('audioThumb');
+    if(thumb)thumb.style.left=pct+'%';
+    var cur=this._audio.currentTime;
+    var dur=this._audio.duration;
+    var cm=Math.floor(cur/60),cs=Math.floor(cur%60);
+    var dm=Math.floor(dur/60),ds=Math.floor(dur%60);
     var te=document.getElementById('audioTimeEl');
-    if(te)te.textContent=m+':'+(s<10?'0':'')+s;
+    if(te)te.textContent=cm+':'+(cs<10?'0':'')+cs+' / '+dm+':'+(ds<10?'0':'')+ds;
   },
 
   /* ── Rendering ── */
