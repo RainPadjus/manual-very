@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
-(function(){var t=localStorage.getItem('mv_theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)})();
+(function(){var t=localStorage.getItem('mv_theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t);var fs=localStorage.getItem('mv_fontsize');if(fs)document.documentElement.style.setProperty('--fs-body',fs);var mw=localStorage.getItem('mv_width');if(mw)document.documentElement.style.setProperty('--cw',mw)})();
 </script>
 <style>
 /* ═══ RESET ═══ */
@@ -33,6 +33,7 @@ body{font-family:var(--fb);color:var(--tx);background:var(--bg);line-height:1.75
   --sh2:0 4px 16px rgba(28,25,23,.08),0 1px 3px rgba(28,25,23,.06);
   --sh3:0 20px 60px rgba(28,25,23,.12),0 4px 16px rgba(28,25,23,.08);
   --glass:rgba(250,249,246,.88);
+  --fs-body:1.08rem;
   --hh:56px;--sw:320px;--cw:680px;--yw:580px;
   --ease:.3s cubic-bezier(.4,0,.2,1);
 }
@@ -158,7 +159,7 @@ main{padding-top:var(--hh)}
 .content h2{font-family:var(--fd);font-size:1.65rem;font-weight:600;margin:2.75rem 0 1rem;letter-spacing:-.01em;color:var(--tx)}
 .content h3{font-family:var(--fd);font-size:1.35rem;font-weight:600;margin:2.25rem 0 .75rem;letter-spacing:-.01em}
 .content h4{font-family:var(--fd);font-size:1.15rem;font-weight:600;margin:1.75rem 0 .6rem}
-.content p{margin-bottom:1.25em;font-size:1.08rem;line-height:1.8}
+.content p{margin-bottom:1.25em;font-size:var(--fs-body);line-height:1.8}
 .content ul,.content ol{margin:1em 0 1.5em;padding-left:1.75em}
 .content ol{list-style:decimal}
 .content li{margin-bottom:.5em;line-height:1.65;font-size:1.02rem}
@@ -266,6 +267,30 @@ main{padding-top:var(--hh)}
 .cover-bonus:hover{color:var(--ac)}
 .sb-bonus{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);opacity:.7;padding:.15rem .75rem;margin-bottom:.15rem}
 
+/* ═══ SETTINGS PANEL ═══ */
+#settingsPanel{position:fixed;top:var(--hh);right:0;width:min(320px,90vw);background:var(--bgR);border:1px solid var(--bd);border-top:none;border-radius:0 0 0 12px;box-shadow:var(--sh3);z-index:55;padding:1.25rem 1.5rem;transform:translateY(-110%);opacity:0;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .25s ease;pointer-events:none}
+#settingsPanel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+.settings-title{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tx4);margin-bottom:1rem}
+.settings-row{margin-bottom:1.15rem}
+.settings-label{font-family:var(--fb);font-size:.85rem;color:var(--tx2);margin-bottom:.5rem}
+.settings-opts{display:flex;gap:4px;border:1px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--bgI);padding:2px}
+.settings-opt{flex:1;text-align:center;font-family:var(--fm);font-size:.62rem;letter-spacing:.04em;padding:.45rem .5rem;border:none;background:transparent;color:var(--tx3);cursor:pointer;border-radius:6px;transition:all .2s ease}
+.settings-opt:hover{color:var(--tx)}
+.settings-opt.active{background:var(--tx);color:var(--bg)}
+[data-theme="dark"] .settings-opt.active{background:var(--ac);color:var(--bgD)}
+
+/* ═══ COVER PROGRESS ═══ */
+.cover-progress{position:relative;z-index:1;margin-top:2rem;opacity:0;animation:fadeUp .8s ease 2s forwards;text-align:center}
+.cover-progress-text{font-family:var(--fm);font-size:.68rem;color:var(--tx4);letter-spacing:.03em;margin-bottom:.5rem}
+.cover-progress-bar{width:min(200px,50vw);height:3px;background:var(--bd);border-radius:2px;margin:0 auto;overflow:hidden}
+.cover-progress-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .5s ease}
+
+/* ═══ SIDEBAR PROGRESS FOOTER ═══ */
+.sb-progress{padding:1rem 1.5rem;margin-top:.5rem;border-top:1px solid var(--bd)}
+.sb-progress-text{font-family:var(--fm);font-size:.62rem;color:var(--tx4);letter-spacing:.03em;margin-bottom:.4rem}
+.sb-progress-bar{width:100%;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
+.sb-progress-fill{height:100%;background:var(--ac);border-radius:2px;transition:width .3s ease}
+
 /* ═══ THEME TRANSITION ═══ */
 .tt,.tt *,.tt *::before,.tt *::after{transition:background-color .4s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease,fill .3s ease,stroke .3s ease!important}
 
@@ -316,6 +341,10 @@ main{padding-top:var(--hh)}
   <button class="cover-btn" onclick="app.start()">Читать</button>
   <button class="cover-continue hidden" id="coverContinue" onclick="app.resume()"></button>
   <button class="cover-bonus" onclick="app.goInvestigation()">Бонус: как всё началось →</button>
+  <div class="cover-progress hidden" id="coverProgress">
+    <div class="cover-progress-text" id="coverProgressText"></div>
+    <div class="cover-progress-bar"><div class="cover-progress-fill" id="coverProgressFill"></div></div>
+  </div>
 </div>
 
 <div id="searchModal" class="hidden">
@@ -342,6 +371,9 @@ main{padding-top:var(--hh)}
     <button class="icon-btn" onclick="app.toggleSidebar()" aria-label="Меню">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="14" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/></svg>
     </button>
+    <button class="icon-btn" onclick="app.goHome()" aria-label="На обложку">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l7-7 7 7"/><path d="M5 8v8a1 1 0 001 1h3v-4h2v4h3a1 1 0 001-1V8"/></svg>
+    </button>
     <span class="hdr-title">Просто о вере</span>
     <span class="hdr-sep">/</span>
     <span class="hdr-chapter" id="hdrChapter"></span>
@@ -352,12 +384,35 @@ main{padding-top:var(--hh)}
       <button class="icon-btn" onclick="app.openSearch()" aria-label="Поиск">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg>
       </button>
+      <button class="icon-btn" id="settingsBtn" onclick="app.toggleSettings()" aria-label="Настройки">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="3" y1="5" x2="17" y2="5"/><line x1="3" y1="10" x2="17" y2="10"/><line x1="3" y1="15" x2="17" y2="15"/><circle cx="7" cy="5" r="1.5" fill="currentColor"/><circle cx="13" cy="10" r="1.5" fill="currentColor"/><circle cx="9" cy="15" r="1.5" fill="currentColor"/></svg>
+      </button>
       <button class="icon-btn" id="themeBtn" onclick="app.toggleTheme()" aria-label="Тема">
         <svg class="ico-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="3.5"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="10" y1="16" x2="10" y2="18"/><line x1="2" y1="10" x2="4" y2="10"/><line x1="16" y1="10" x2="18" y2="10"/><line x1="4.3" y1="4.3" x2="5.7" y2="5.7"/><line x1="14.3" y1="14.3" x2="15.7" y2="15.7"/><line x1="4.3" y1="15.7" x2="5.7" y2="14.3"/><line x1="14.3" y1="5.7" x2="15.7" y2="4.3"/></svg>
         <svg class="ico-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 11.5A7.5 7.5 0 018.5 3a7.5 7.5 0 100 17c3 0 5.6-1.8 6.8-4.3A5.5 5.5 0 0117 11.5z"/></svg>
       </button>
     </div>
   </header>
+
+  <div id="settingsPanel">
+    <div class="settings-title">Настройки</div>
+    <div class="settings-row">
+      <div class="settings-label">Размер шрифта</div>
+      <div class="settings-opts" id="fontSizeOpts">
+        <button class="settings-opt" data-v="0.92rem" onclick="app.setFontSize('0.92rem')">Aa−</button>
+        <button class="settings-opt active" data-v="1.08rem" onclick="app.setFontSize('1.08rem')">Средний</button>
+        <button class="settings-opt" data-v="1.24rem" onclick="app.setFontSize('1.24rem')">Aa+</button>
+      </div>
+    </div>
+    <div class="settings-row">
+      <div class="settings-label">Ширина текста</div>
+      <div class="settings-opts" id="widthOpts">
+        <button class="settings-opt" data-v="560px" onclick="app.setWidth('560px')">Узкая</button>
+        <button class="settings-opt active" data-v="680px" onclick="app.setWidth('680px')">Обычная</button>
+        <button class="settings-opt" data-v="840px" onclick="app.setWidth('840px')">Широкая</button>
+      </div>
+    </div>
+  </div>
 
   <div id="overlay" onclick="app.closeSidebar()"></div>
   <nav id="sidebar">
@@ -368,6 +423,10 @@ main{padding-top:var(--hh)}
       </button>
     </div>
     <div id="sbList"></div>
+    <div class="sb-progress" id="sbProgress">
+      <div class="sb-progress-text" id="sbProgressText"></div>
+      <div class="sb-progress-bar"><div class="sb-progress-fill" id="sbProgressFill"></div></div>
+    </div>
   </nav>
 
   <div id="progressBar"></div>
@@ -386,7 +445,7 @@ main{padding-top:var(--hh)}
       <div id="diveWrap"></div>
       <div class="ch-nav" id="chNav"></div>
       <footer class="book-footer">
-        <kbd>←</kbd> <kbd>→</kbd> навигация &nbsp;·&nbsp; <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> глубина &nbsp;·&nbsp; <kbd>M</kbd> меню &nbsp;·&nbsp; <kbd>⌘K</kbd> поиск
+        <kbd>←</kbd> <kbd>→</kbd> навигация &nbsp;·&nbsp; <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> глубина &nbsp;·&nbsp; <kbd>M</kbd> меню &nbsp;·&nbsp; <kbd>H</kbd> обложка &nbsp;·&nbsp; <kbd>S</kbd> настройки &nbsp;·&nbsp; <kbd>⌘K</kbd> поиск
       </footer>
     </div>
   </main>
@@ -416,6 +475,9 @@ const app={
     this.buildSb();
     this.buildIndex();
     this.bindKeys();
+    this.initSettings();
+    this.updateCoverProgress();
+    this.updateSbProgress();
     window.addEventListener('scroll',()=>{this.updateProgress();this.handleScroll()},{passive:true});
     var p=this.s.prog;
     var lastSec=parseInt(localStorage.getItem('mv_last_sec')||'-1');
@@ -453,6 +515,31 @@ const app={
     }
   },
 
+  /* ── Settings ── */
+  toggleSettings(){
+    var p=document.getElementById('settingsPanel');
+    p.classList.toggle('open');
+  },
+  closeSettings(){
+    document.getElementById('settingsPanel').classList.remove('open');
+  },
+  setFontSize(v){
+    document.documentElement.style.setProperty('--fs-body',v);
+    localStorage.setItem('mv_fontsize',v);
+    document.querySelectorAll('#fontSizeOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===v)});
+  },
+  setWidth(v){
+    document.documentElement.style.setProperty('--cw',v);
+    localStorage.setItem('mv_width',v);
+    document.querySelectorAll('#widthOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===v)});
+  },
+  initSettings(){
+    var fs=localStorage.getItem('mv_fontsize')||'1.08rem';
+    var w=localStorage.getItem('mv_width')||'680px';
+    document.querySelectorAll('#fontSizeOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===fs)});
+    document.querySelectorAll('#widthOpts .settings-opt').forEach(function(b){b.classList.toggle('active',b.dataset.v===w)});
+  },
+
   /* ── Navigation ── */
   goInvestigation(){this.go(-2);this.showReader()},
   start(){this.go(-1);this.showReader()},
@@ -465,8 +552,24 @@ const app={
     document.getElementById('reader').classList.remove('hidden');
   },
 
+  goHome(){
+    if(this._audio){this._audio.pause();this._audio=null;this._audioSec=-1}
+    document.getElementById('reader').classList.add('hidden');
+    var cover=document.getElementById('cover');
+    cover.classList.remove('hidden');
+    cover.style.opacity='0';
+    cover.style.transition='opacity .4s ease';
+    setTimeout(function(){cover.style.opacity='1'},10);
+    setTimeout(function(){cover.style.transition=''},450);
+    this.updateCoverProgress();
+    var sp=document.getElementById('settingsPanel');
+    if(sp.classList.contains('open'))sp.classList.remove('open');
+    window.scrollTo({top:0,behavior:'instant'});
+  },
+
   go(sec,depth){
     if(this._audio&&this._audioSec!==sec){this._audio.pause();this._audio=null;this._audioSec=-1}
+    this.closeSettings();
     var el=document.getElementById('content');
     el.classList.add('fading');
     var self=this;
@@ -507,6 +610,7 @@ const app={
     var w=document.getElementById('audioWrap');
     var sec=this.s.sec,depth=this.s.depth;
     if(sec<0||sec>=18||depth!==0){w.innerHTML='';return}
+    if(sec>=9){w.innerHTML='<div class="audio-wrap"><div class="audio-toggle" style="cursor:default;opacity:.5;pointer-events:none"><svg viewBox="0 0 20 20" fill="currentColor" style="width:14px;height:14px"><path d="M10 3.75a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.2.6L5.8 12.5H3.25A.75.75 0 0 1 2.5 11.75v-4.5a.75.75 0 0 1 .75-.75H5.8l3.75-3.1a.75.75 0 0 1 .45-.15zM12.5 7a.5.5 0 0 1 .7 0 4.5 4.5 0 0 1 0 6 .5.5 0 1 1-.7-.7 3.5 3.5 0 0 0 0-4.6.5.5 0 0 1 0-.7z"/></svg>Скоро</div></div>';return}
     var playIco='<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="5,3 17,10 5,17"/></svg>';
     var pauseIco='<svg viewBox="0 0 20 20" fill="currentColor"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg>';
     var skipBkIco='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 1 1.5 4.3"/><polyline points="3,7 3,10.5 6.5,10.5"/></svg>';
@@ -802,9 +906,35 @@ const app={
     if(this.s.prog[k]===undefined||this.s.prog[k]<depth)this.s.prog[k]=depth;
     this.saveProg();
     this.updateSbDots();
+    this.updateSbProgress();
   },
   loadProg(){try{this.s.prog=JSON.parse(localStorage.getItem('mv_prog')||'{}')}catch(e){this.s.prog={}}},
   saveProg(){localStorage.setItem('mv_prog',JSON.stringify(this.s.prog))},
+
+  /* ── Cover & Sidebar Progress ── */
+  updateCoverProgress(){
+    var prog=this.s.prog;
+    var done=0;
+    for(var i=0;i<18;i++){if(prog[i]!==undefined&&prog[i]>=2)done++}
+    var cp=document.getElementById('coverProgress');
+    if(!cp)return;
+    if(done>0||Object.keys(prog).length>0){
+      var read=0;for(var j=0;j<18;j++){if(prog[j]!==undefined)read++}
+      cp.classList.remove('hidden');
+      document.getElementById('coverProgressText').textContent='Прочитано: '+read+' из 18 глав';
+      document.getElementById('coverProgressFill').style.width=(read/18*100)+'%';
+    }else{cp.classList.add('hidden')}
+  },
+  updateSbProgress(){
+    var prog=this.s.prog;
+    var done=0;
+    for(var i=0;i<18;i++){if(prog[i]!==undefined&&prog[i]>=2)done++}
+    var el=document.getElementById('sbProgressText');
+    if(el){
+      el.textContent='Прогресс: '+done+'/18';
+      document.getElementById('sbProgressFill').style.width=(done/18*100)+'%';
+    }
+  },
 
   updateProgress(){
     var bar=document.getElementById('progressBar');
@@ -919,6 +1049,7 @@ const app={
       if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();self.openSearch();return}
       if(e.key==='Escape'){
         if(!document.getElementById('searchModal').classList.contains('hidden')){self.closeSearch();return}
+        if(document.getElementById('settingsPanel').classList.contains('open')){self.closeSettings();return}
         if(self.s.sbOpen){self.closeSidebar();return}
       }
       if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
@@ -928,6 +1059,8 @@ const app={
       else if(e.key==='2')self.setDepth(1);
       else if(e.key==='3')self.setDepth(2);
       else if(e.key==='m'||e.key==='\u044C')self.toggleSidebar();
+      else if(e.key==='h'||e.key==='\u0440')self.goHome();
+      else if(e.key==='s'||e.key==='\u044B')self.toggleSettings();
     });
   }
 };
