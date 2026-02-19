@@ -665,9 +665,9 @@ const app={
   renderAudio(){
     var w=document.getElementById('audioWrap');
     var sec=this.s.sec,depth=this.s.depth;
-    /* Audio temporarily disabled — coming soon */
-    w.innerHTML='<div class="audio-wrap"><div class="audio-toggle" style="cursor:default;opacity:.5;pointer-events:none"><svg viewBox="0 0 20 20" fill="currentColor" style="width:14px;height:14px"><path d="M10 3.75a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.2.6L5.8 12.5H3.25A.75.75 0 0 1 2.5 11.75v-4.5a.75.75 0 0 1 .75-.75H5.8l3.75-3.1a.75.75 0 0 1 .45-.15zM12.5 7a.5.5 0 0 1 .7 0 4.5 4.5 0 0 1 0 6 .5.5 0 1 1-.7-.7 3.5 3.5 0 0 0 0-4.6.5.5 0 0 1 0-.7z"/></svg>Скоро</div></div>';return;
-    var hasAudio=false;
+    /* Audio available only for ch01-02 yadro; hidden elsewhere */
+    var hasAudio=(depth===0&&sec>=0&&sec<2);
+    if(!hasAudio){w.innerHTML='';return}
     var playIco='<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="5,3 17,10 5,17"/></svg>';
     var pauseIco='<svg viewBox="0 0 20 20" fill="currentColor"><rect x="4" y="3" width="4" height="14" rx="1"/><rect x="12" y="3" width="4" height="14" rx="1"/></svg>';
     var skipBkIco='<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 1 1.5 4.3"/><polyline points="3,7 3,10.5 6.5,10.5"/></svg>';
