@@ -278,6 +278,8 @@ main{padding-top:var(--hh)}
 .cover-bonus:hover{color:var(--ac)}
 .cover-about{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-top:.75rem;cursor:pointer;transition:color var(--ease);position:relative;z-index:1;background:none;border:none;padding:.5rem 1rem;border-radius:4px}
 .cover-about:hover{color:var(--ac)}
+.cover-download{font-family:var(--fm);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-top:.75rem;cursor:pointer;transition:color var(--ease);position:relative;z-index:1;text-decoration:none;padding:.5rem 1rem;border-radius:4px;display:inline-block}
+.cover-download:hover{color:var(--ac)}
 
 /* ═══ ABOUT MODAL ═══ */
 #aboutModal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem}
@@ -380,6 +382,7 @@ main{padding-top:var(--hh)}
   <button class="cover-btn" onclick="app.start()">Читать</button>
   <button class="cover-continue hidden" id="coverContinue" onclick="app.resume()"></button>
   <button class="cover-about" onclick="app.openAbout()">О проекте</button>
+  <a class="cover-download" href="prosto-o-vere.epub" download>Скачать epub</a>
   <div class="cover-progress hidden" id="coverProgress">
     <div class="cover-progress-text" id="coverProgressText"></div>
     <div class="cover-progress-bar"><div class="cover-progress-fill" id="coverProgressFill"></div></div>
