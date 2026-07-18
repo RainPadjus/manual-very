@@ -148,17 +148,6 @@ body{font-family:var(--fb);color:var(--tx);background:var(--bg);line-height:1.75
 .search-foot{display:flex;gap:1.5rem;justify-content:center;padding:.6rem;border-top:1px solid var(--bd);font-family:var(--fm);font-size:.6rem;color:var(--tx4)}
 .search-foot kbd{display:inline-block;padding:.1em .3em;background:var(--bgI);border:1px solid var(--bd);border-radius:3px;font-family:var(--fm);font-size:.58rem;margin:0 .15em}
 
-/* ═══ DEPTH SELECTOR ═══ */
-.depth-sel{display:flex;margin:1.75rem auto 2.5rem;width:fit-content;border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--bgI);position:relative;padding:3px}
-.depth-slider{position:absolute;top:3px;height:calc(100% - 6px);background:var(--tx);border-radius:8px;transition:all .35s cubic-bezier(.4,0,.2,1);z-index:0}
-.depth-btn{font-family:var(--fm);font-size:.7rem;letter-spacing:.04em;padding:.5rem 1.3rem;border:none;background:transparent;color:var(--tx2);cursor:pointer;transition:color .25s ease;white-space:nowrap;position:relative;z-index:1}
-.depth-btn:hover{color:var(--tx)}
-.depth-btn.active{color:var(--bg)}
-.depth-time{display:block;font-size:.58rem;color:var(--tx4);margin-top:2px;letter-spacing:0;transition:color .25s ease}
-.depth-btn.active .depth-time{color:var(--tx4)}
-[data-theme="dark"] .depth-slider{background:var(--ac)}
-[data-theme="dark"] .depth-btn.active{color:var(--bgD)}
-
 /* ═══ READING AREA ═══ */
 main{padding-top:var(--hh)}
 .reading{max-width:var(--cw);margin:0 auto;padding:2.5rem 1.5rem 4rem}
@@ -354,7 +343,6 @@ a.ext{color:var(--ac);text-decoration:underline;text-underline-offset:3px;text-d
   .reading{padding:2rem 1.15rem 3rem}
   .content p{font-size:var(--fs-body,1.02rem)}
   .tier-0 .content p{font-size:var(--fs-body,1.02rem)}
-  .depth-btn{padding:.45rem 1rem;font-size:.66rem}
   .ch-nav{flex-direction:column}
   .nav-btn{max-width:100%}
   .nav-btn.next{align-items:flex-start;text-align:left}
@@ -371,11 +359,9 @@ a.ext{color:var(--ac);text-decoration:underline;text-underline-offset:3px;text-d
   .cover-marquee-row span{font-size:.5rem;padding:.2rem .5rem}
 }
 @media(max-width:400px){
-  .depth-sel{width:calc(100% - .5rem);margin-left:auto;margin-right:auto;border-radius:8px}
-  .depth-btn{flex:1;text-align:center;padding:.45rem .4rem}
 }
 @media print{
-  #header,#sidebar,#overlay,.depth-sel,.ch-nav,.dive,#progressBar,.book-footer,#btt,#searchModal{display:none!important}
+  #header,#sidebar,#overlay,.ch-nav,.dive,#progressBar,.book-footer,#btt,#searchModal{display:none!important}
   main{padding-top:0}
   .reading{max-width:100%;padding:0}
 }
@@ -466,9 +452,6 @@ a.ext{color:var(--ac);text-decoration:underline;text-underline-offset:3px;text-d
     <span class="hdr-sep">/</span>
     <span class="hdr-chapter" id="hdrChapter"></span>
     <div class="hdr-right">
-      <div class="hdr-dots hidden" id="hdrDots">
-        <span class="hdr-dot"></span><span class="hdr-dot"></span><span class="hdr-dot"></span>
-      </div>
       <button class="icon-btn" onclick="app.openSearch()" aria-label="Поиск">
         <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8.5" cy="8.5" r="5.5"/><line x1="12.5" y1="12.5" x2="17" y2="17"/></svg>
       </button>
@@ -522,18 +505,12 @@ a.ext{color:var(--ac);text-decoration:underline;text-underline-offset:3px;text-d
   <main>
     <div class="reading" id="readingArea">
       <div id="chHdr"></div>
-      <div class="depth-sel hidden" id="depthSel">
-        <div class="depth-slider" id="depthSlider"></div>
-        <button class="depth-btn active" data-d="0" onclick="app.setDepth(0)">Ядро<span class="depth-time" id="dt0"></span></button>
-        <button class="depth-btn" data-d="1" onclick="app.setDepth(1)">Обзор<span class="depth-time" id="dt1"></span></button>
-        <button class="depth-btn" data-d="2" onclick="app.setDepth(2)">Полная<span class="depth-time" id="dt2"></span></button>
-      </div>
       <div id="audioWrap"></div>
       <article class="content content-enter" id="content"></article>
       <div id="diveWrap"></div>
       <div class="ch-nav" id="chNav"></div>
       <footer class="book-footer">
-        <kbd>←</kbd> <kbd>→</kbd> навигация &nbsp;·&nbsp; <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> глубина &nbsp;·&nbsp; <kbd>M</kbd> меню &nbsp;·&nbsp; <kbd>H</kbd> обложка &nbsp;·&nbsp; <kbd>S</kbd> настройки &nbsp;·&nbsp; <kbd>⌘K</kbd> поиск
+        <kbd>←</kbd> <kbd>→</kbd> навигация &nbsp;·&nbsp; <kbd>M</kbd> меню &nbsp;·&nbsp; <kbd>H</kbd> обложка &nbsp;·&nbsp; <kbd>S</kbd> настройки &nbsp;·&nbsp; <kbd>⌘K</kbd> поиск
       </footer>
     </div>
   </main>
@@ -690,25 +667,6 @@ const app={
     },220);
   },
 
-  setDepth(d){
-    var el=document.getElementById('content');
-    el.classList.add('fading');
-    var self=this;
-    setTimeout(function(){
-      self.s.depth=d;
-      self.renderContent();
-      self.renderAudio();
-      self.renderDepth();
-      self.renderDive();
-      self.renderHdr();
-      el.classList.remove('fading');
-      el.classList.add('content-enter');
-      setTimeout(function(){el.classList.remove('content-enter')},450);
-      window.scrollTo({top:0,behavior:'smooth'});
-      self.markRead(self.s.sec,d);
-    },220);
-  },
-
   /* ── Audio ── */
   renderAudio(){
     var w=document.getElementById('audioWrap');
@@ -820,23 +778,21 @@ const app={
   render(){
     this.renderHdr();
     this.renderChHdr();
-    this.renderDepth();
     this.renderContent();
     this.renderAudio();
     this.renderDive();
     this.renderNav();
     this.updateSbActive();
-    document.getElementById('readingArea').className='reading'+(this.s.sec>=0&&this.s.sec<NC?' tier-'+this.s.depth:'')+(this.s.sec===-2?' investigation':'');
+    document.getElementById('readingArea').className='reading'+(this.s.sec>=0&&this.s.sec<NC?' tier-0':'')+(this.s.sec===-2?' investigation':'');
   },
 
   renderHdr(){
     var sec=this.s.sec,depth=this.s.depth;
     var hc=document.getElementById('hdrChapter');
-    var hd=document.getElementById('hdrDots');
-    if(sec===-2){hc.textContent='\u0420\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435';hd.classList.add('hidden')}
-    else if(sec===-1){hc.textContent='\u041F\u0440\u0435\u0434\u0438\u0441\u043B\u043E\u0432\u0438\u0435';hd.classList.add('hidden')}
-    else if(sec===NC){hc.textContent='\u041F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u044F';hd.classList.add('hidden')}
-    else{hc.textContent=(sec<KN?'\u041A\u0430\u0440\u0442\u0430 '+(sec+1):'\u0413\u043B\u0430\u0432\u0430 '+(sec-KN+1))+'. '+B.chapters[sec].short;hd.classList.add('hidden');}
+    if(sec===-2){hc.textContent='\u0420\u0430\u0441\u0441\u043B\u0435\u0434\u043E\u0432\u0430\u043D\u0438\u0435'}
+    else if(sec===-1){hc.textContent='\u041F\u0440\u0435\u0434\u0438\u0441\u043B\u043E\u0432\u0438\u0435'}
+    else if(sec===NC){hc.textContent='\u041F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u044F'}
+    else{hc.textContent=(sec<KN?'\u041A\u0430\u0440\u0442\u0430 '+(sec+1):'\u0413\u043B\u0430\u0432\u0430 '+(sec-KN+1))+'. '+B.chapters[sec].short;}
   },
 
   renderChHdr(){
@@ -845,10 +801,6 @@ const app={
     else if(sec===-1)el.innerHTML='<div class="ch-num">\u041F\u0440\u0435\u0434\u0438\u0441\u043B\u043E\u0432\u0438\u0435</div>';
     else if(sec===NC)el.innerHTML='<div class="ch-num">\u041F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u044F</div><h1 class="ch-title">\u0420\u0435\u0441\u0443\u0440\u0441\u044B \u0438 \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F</h1>';
     else el.innerHTML='<div class="ch-num">'+(sec<KN?'Карта '+(sec+1):'Глава '+(sec-KN+1))+'</div><h1 class="ch-title">'+B.chapters[sec].title+'</h1>';
-  },
-
-  renderDepth(){
-    document.getElementById('depthSel').classList.add('hidden');
   },
 
   ILLUST:{
@@ -1150,9 +1102,6 @@ const app={
       if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
       if(e.key==='ArrowLeft')self.prev();
       else if(e.key==='ArrowRight')self.next();
-      else if(e.key==='1')self.setDepth(0);
-      else if(e.key==='2')self.setDepth(1);
-      else if(e.key==='3')self.setDepth(2);
       else if(e.key==='m'||e.key==='\u044C')self.toggleSidebar();
       else if(e.key==='h'||e.key==='\u0440')self.goHome();
       else if(e.key==='s'||e.key==='\u044B')self.toggleSettings();
