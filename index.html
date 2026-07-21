@@ -593,7 +593,7 @@ const app={
     var w=document.getElementById('audioWrap');
     var sec=this.s.sec,depth=this.s.depth;
     /* Полные аудиоверсии записаны для глав 1–5 (audio/polnaya) */
-    var hasAudio=AUDIO_MAP.hasOwnProperty(sec);
+    var hasAudio=false; /* аудио временно отключено — перезапишем позже */
     if(!hasAudio){w.innerHTML='';return}
     var audioDir='audio/polnaya/';
     var audioLabel='Слушать главу';
